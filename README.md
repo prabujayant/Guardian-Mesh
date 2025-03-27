@@ -1,147 +1,100 @@
-# **Guardian Mesh: Autonomous Cybersecurity for IoT Networks**  
+# Guardian Mesh: Autonomous Cybersecurity for IoT Networks
 
-## **Introduction**  
+## 1. Introduction
 
-With the rapid expansion of the **Internet of Things (IoT)**, industries have embraced **smart automation and interconnected devices** to enhance efficiency. However, these networks are increasingly vulnerable to cyber threats such as:  
+The rapid expansion of the Internet of Things (IoT) has led to increased connectivity across industries, enabling automation and efficiency. However, the heterogeneity, resource limitations, and lack of standard security measures in IoT networks make them susceptible to cyber threats such as Distributed Denial-of-Service (DDoS) attacks, unauthorized access, and eavesdropping.
 
-- **Distributed Denial-of-Service (DDoS) attacks**  
-- **Unauthorized access** and device hijacking  
-- **Eavesdropping & data interception**  
-
-### **Why is IoT Security Challenging?**  
-
-IoT devices are often **resource-constrained** (low-power CPUs, limited memory) and **heterogeneous** (different communication protocols, vendors, and security models). Traditional security solutions designed for enterprise networks are **too heavy** for IoT environments.  
-
-**Guardian Mesh** is an autonomous cybersecurity framework that provides:  
-
-✔️ **Real-time monitoring** of network traffic  
-✔️ **Anomaly detection** using statistical models  
-✔️ **Automated threat mitigation** with **intelligent isolation & recovery mechanisms**  
-
-By leveraging **real-time packet inspection, dynamic threat isolation, and self-healing capabilities**, Guardian Mesh ensures that IoT networks remain **secure, resilient, and efficient**.  
+**Guardian Mesh** is an autonomous cybersecurity framework designed to secure IoT networks through real-time monitoring, anomaly detection, and automated threat mitigation. By leveraging real-time packet inspection, intelligent threat isolation, and recovery mechanisms, Guardian Mesh ensures minimal downtime and resource efficiency in heterogeneous IoT environments.
 
 ---
 
-## **System Architecture**  
+## 2. System Architecture and Design
 
-Guardian Mesh is built on a **three-tier hierarchical architecture**, ensuring **modularity, scalability, and efficiency**.  
+Guardian Mesh follows a three-tier hierarchical architecture:
 
-### **1️⃣ Edge Layer (Device-Level Security)**  
+### A. Edge Layer
+- Serves as the primary interface with IoT devices.
+- Uses Docker containers with minimal Debian OS for simulation.
+- Implements a custom network (`hackathon_my_network`) with unique MAC address assignment for each node.
 
-- Acts as the **primary interface** between IoT devices and the security framework.  
-- Uses **Docker containers** with a **lightweight Debian OS** to simulate IoT environments.  
-- Implements a **custom virtual network (`hackathon_my_network`)** where each device is assigned a **unique MAC address** for identification.  
+### B. Processing Layer
+- Implements real-time traffic inspection and anomaly detection.
+- Uses Python-based packet analysis for metadata extraction.
+- Employs statistical deviation analysis for threat detection.
 
-### **2️⃣ Processing Layer (Traffic Analysis & Anomaly Detection)**  
-
-- **Continuously monitors** network traffic for unusual patterns.  
-- Uses **Python-based packet sniffing** to extract critical metadata (source/destination MAC, packet size, protocol type).  
-- Implements **statistical deviation analysis** to detect anomalies.  
-
-### **3️⃣ Management Layer (Control & Response)**  
-
-- Provides a **Flask-based administrative dashboard** for security monitoring.  
-- Logs security events for **post-incident forensics** and optimization.  
-- Enforces **strict access control & authentication policies**.  
+### C. Management Layer
+- Provides administrative control via Flask.
+- Maintains logging mechanisms for post-incident analysis and system optimization.
+- Ensures continuous authentication and strict access control policies.
 
 ---
 
-## **Core Functional Components**  
+## 3. Core Functional Components
 
-### **🔍 1. Traffic Monitoring Subsystem**  
+### A. Traffic Monitoring Subsystem
+- Captures network packets using Python’s socket library.
+- Extracts MAC addresses, packet lengths, and protocol details.
+- Maintains real-time statistics using optimized data structures.
 
-- Uses Python’s `socket` and `scapy` libraries to **capture real-time network packets**.  
-- Extracts essential metadata for **traffic profiling and threat detection**.  
-- Uses **optimized data structures (e.g., dictionaries, Bloom filters)** for fast lookups.  
+### B. Anomaly Detection Mechanism
+- Establishes behavioral baselines using historical traffic data.
+- Implements threshold-based detection with statistical modeling.
+- Triggers automated responses upon detecting deviations from normal traffic patterns.
 
-### **🧠 2. Anomaly Detection Mechanism**  
-
-- Establishes **baselines of normal traffic** using historical data.  
-- Uses **threshold-based detection** with **statistical models (Z-score, moving averages, entropy analysis)** to detect anomalies.  
-- Triggers an **automated response** upon deviation from normal patterns.  
-
-### **🚨 3. Threat Isolation & Recovery**  
-
-- Uses **MAC-based traffic control** to isolate compromised nodes dynamically.  
-- Generates **firewall rules in real-time** (e.g., `iptables` or `ufw`) to block malicious traffic.  
-- Implements **self-healing mechanisms** to allow **automated recovery** after a threat is neutralized.  
+### C. Threat Isolation and Recovery
+- Uses MAC-based traffic control for isolating compromised nodes.
+- Generates dynamic firewall rules upon anomaly detection.
+- Implements automated rehabilitation procedures after threat mitigation.
 
 ---
 
-## **🛠️ Experimental Setup and Validation**  
+## 4. Experimental Setup and Validation
 
-### **1️⃣ Simulation Environment**  
+### A. Simulation Environment
+- Deployed a three-node IoT simulation using Docker containers.
+- Configured each node with network monitoring tools and security policies.
+- Implemented Flask APIs for dynamic security enforcement.
 
-- Deployed a **three-node IoT simulation** using **Docker containers**.  
-- Configured each node with:  
-  - Network monitoring tools (`tcpdump`, `scapy`)  
-  - Predefined security policies  
-  - Flask APIs for dynamic security enforcement  
+### B. Attack Scenarios
+- Simulated various cyber threats using `hping3`, including:
+  - **SYN flood attacks**
+  - **UDP flood attacks**
+  - **Protocol-specific exploitation**
+- Evaluated system response under different threat intensities.
 
-### **2️⃣ Attack Scenarios (Cyber Threat Simulations)**  
-
-We evaluated Guardian Mesh by simulating real-world cyberattacks using `hping3` to generate malicious traffic. Attack scenarios included:  
-
-| Attack Type | Description | Guardian Mesh Response |
-|------------|-------------|----------------------|
-| **SYN Flood** | Overwhelms a device with fake connection requests. | Detects anomaly via high TCP SYN counts & blocks the attacker's MAC. |
-| **UDP Flood** | Floods the target with UDP packets, causing high resource usage. | Detects excessive UDP traffic & dynamically blocks the source. |
-| **Protocol Exploitation** | Malformed packets target IoT-specific protocols (MQTT, CoAP). | Identifies suspicious patterns & enforces stricter protocol filtering. |
-
-### **3️⃣ Performance Metrics**  
-
-| Metric | Value | Explanation |
-|--------|------|-------------|
-| **Detection Latency** | < 1 second | Identifies anomalies in real time. |
-| **False Positive Rate** | < 5% | Optimized detection models ensure minimal misclassification. |
-| **CPU Usage** | < 10% | Lightweight processing ensures minimal impact on IoT devices. |
+### C. Performance Metrics
+- **Detection Latency:** Identifies anomalies within 1 second.
+- **Resource Status:** CPU and RAM utilization.
 
 ---
 
-## **🔄 System Operations and Workflow**  
+## 5. System Operations and Workflow
 
-### **📌 1. Initialization Protocol**  
+### A. Initialization Protocol
+- Configures network interfaces and security policies.
+- Deploys containerized nodes with predefined monitoring mechanisms.
+- Establishes baseline metrics for normal traffic behavior.
 
-1. Configures **network interfaces & security policies**.  
-2. Deploys **containerized IoT nodes** with monitoring agents.  
-3. Establishes **baseline traffic metrics** for anomaly detection.  
-
-### **⚡ 2. Runtime Operation**  
-
-1. Captures **real-time packet flow** using Python-based sniffers.  
-2. Analyzes traffic **against historical baselines**.  
-3. **Triggers security measures** upon detecting anomalies.  
-4. Logs **all security events** for future investigation.  
+### B. Runtime Operation
+- Continuously captures and analyzes packet flow in real time.
+- Compares incoming traffic against established baselines.
+- Implements automated security measures upon detecting anomalies.
+- Logs all security-related events for future analysis.
 
 ---
 
-## **🛡️ Key Findings & Impact**  
+## 6. Key Findings and Impact
 
-✔️ **Guardian Mesh detects threats in real time with minimal false positives.**  
-✔️ **Ensures low-latency response times while maintaining network stability.**  
-✔️ **Lightweight deployment model ensures compatibility with diverse IoT ecosystems.**  
-✔️ **Enhances scalability, security, and resilience of IoT networks.**  
-
----
-
-## **🚀 Future Enhancements**  
-
-1. **🔎 Advanced Logging & Forensics**:  
-   - Implement **AI-driven analytics** for incident investigation.  
-   - Store logs in **distributed databases** for long-term threat analysis.  
-
-2. **🌍 Cross-Platform Compatibility**:  
-   - Expand support for **MQTT, CoAP, and Zigbee** IoT protocols.  
-   - Optimize detection models for **battery-powered IoT devices**.  
+- Guardian Mesh effectively detects in real time with minimal false positives.
+- The system ensures low-latency response times while maintaining network stability.
+- Its lightweight deployment model ensures compatibility with diverse IoT ecosystems.
+- The framework enhances scalability, security, and resilience of IoT networks.
 
 ---
 
-## **📥 Installation & Usage**  
+## 7. Conclusion and Future Work
 
-### **🔧 Prerequisites**  
-Ensure you have:  
-- **Docker** installed  
-- **Python 3.x**  
-- Required libraries installed:  
-  ```bash
-  pip install flask scapy numpy
+Guardian Mesh provides an autonomous, efficient, and scalable cybersecurity framework for IoT networks. Future enhancements may include:
+
+- **Enhanced Logging & Forensics:** Developing advanced analytics for incident investigation.
+- **Cross-Platform Compatibility:** Expanding the framework to support additional IoT protocols.
